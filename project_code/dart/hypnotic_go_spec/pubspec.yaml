@@ -1,0 +1,4 @@
+name: hypnotic_go_spec
+description: A sample web application
+dependencies:
+  browser: any

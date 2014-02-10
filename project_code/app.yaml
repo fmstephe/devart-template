@@ -4,6 +4,15 @@ runtime: go
 api_version: go1
 
 handlers:
-- url: /.*
+- url: /
   static_files: static/index.html
   upload: static/index.html
+- url: /hypnotic_go_spec.dart.js
+  static_files: static/hypnotic_go_spec.dart.js
+  upload: static/hypnotic_go_spec.dart.js
+- url: /hypnotic_go_spec.dart.js.map
+  static_files: static/hypnotic_go_spec.dart.js.map
+  upload: static/hypnotic_go_spec.dart.js.map
+- url: /dart.js
+  static_files: static/dart.js
+  upload: static/dart.js

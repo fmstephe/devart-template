@@ -1,8 +1,19 @@
 import 'dart:html';
 import 'gotext.dart';
+import 'dart:async';
 
 void main() {
   SpecText gospec = new SpecText();
+  print(gospec.nextChar());
+  print(gospec.nextChar());
+  print(gospec.nextChar());
+  print(gospec.nextChar());
+  print(gospec.nextChar());
+  print(gospec.nextChar());
+  var timer = new Timer.periodic(new Duration(seconds:10), (Timer timer) => nextLetter(gospec));
+}
+
+void nextLetter(SpecText gospec) {
   var txt = querySelector("#text_canvas");
   var ctxt = txt.getContext("2d");
   var hgt = txt.height;

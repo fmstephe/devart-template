@@ -4,13 +4,13 @@
             "insert apis"
         ],
         "platforms": [
-            "insert platforms"
+            "Google App Engine"
         ],
         "toolkits": [
-            "insert toolkits"
+            "Go"
         ]
     },
     "themes": [
-        "insert themes"
+        "Go Language Specification"
     ]
 }

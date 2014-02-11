@@ -8,6 +8,7 @@
         ],
         "toolkits": [
             "Go"
+	    "Dart"
         ]
     },
     "themes": [

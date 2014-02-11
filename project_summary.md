@@ -1,5 +1,4 @@
-# Project Title
-The hypnotic futility of my fish
+# The hypnotic tranquility of the Go language specification.
 
 ## Authors
 - Francis Stephens, https://github.com/fmstephe

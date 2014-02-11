@@ -4,6 +4,7 @@ runtime: go
 api_version: go1
 
 handlers:
+# Real App Resources
 - url: /
   static_files: static/index.html
   upload: static/index.html
@@ -16,3 +17,16 @@ handlers:
 - url: /dart.js
   static_files: static/dart.js
   upload: static/dart.js
+# Demo1 Resources
+- url: /demo1
+  static_files: demo1/index.html
+  upload: demo1/index.html
+- url: /demo1/hypnotic_go_spec.dart.js
+  static_files: demo1/hypnotic_go_spec.dart.js
+  upload: demo1/hypnotic_go_spec.dart.js
+- url: /demo1/hypnotic_go_spec.dart.js.map
+  static_files: demo1/hypnotic_go_spec.dart.js.map
+  upload: demo1/hypnotic_go_spec.dart.js.map
+- url: /demo1/dart.js
+  static_files: demo1/dart.js
+  upload: demo1/dart.js

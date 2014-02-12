@@ -1,10 +1,10 @@
 import 'dart:html';
+import 'fish.dart';
 import 'gotext.dart';
-import 'particle.dart';
 import 'dart:async';
-import 'dart:math';
+import 'dart:math' as Math;
 
-List<Particle> particles;
+List<Fish> fishes;
 num lastStamp = 0.0;
 
 void main() {
@@ -15,19 +15,19 @@ void main() {
   mainCtxt.fillStyle = "rgba(0, 0, 0, 1)";
   mainCtxt.fillRect(0,0,width,height);
   SpecText gospec = new SpecText();
-  particles = makeParticles(width, height);
+  fishes = makeFishs(width, height);
   Stopwatch watch = new Stopwatch();
   watch.start();
 //  var timerTxt = new Timer.periodic(new Duration(seconds:1), (Timer timer) => nextLetter(gospec));
   window.animationFrame.then(loop);
 }
 
-List<Particle> makeParticles(int width, int height) {
-  List<Particle> particles = new List<Particle>();
+List<Fish> makeFishs(int width, int height) {
+  List<Fish> Fishs = new List<Fish>();
   for (int i = 0; i < 10000; i++) {
-    particles.add(new Particle(width, height));
+    Fishs.add(new Fish(width, height));
   }
-  return particles;
+  return Fishs;
 }
 
 void nextLetter(SpecText gospec) {
@@ -50,25 +50,25 @@ void loop(num delta) {
   }
   print(delta - lastStamp);
   lastStamp = delta;
-  for (Particle particle in particles) {
-    particle.push();
-    particle.move();
+  for (Fish fish in fishes) {
+    fish.push();
+    fish.move();
   }
-  render(particles);
+  renderMain(fishes);
   window.requestAnimationFrame(loop);
 }
 
-void render(List<Particle> particles) {
+void renderMain(List<Fish> fishes) {
   CanvasElement main = querySelector("#main_canvas");
   int width = main.width;
   int height = main.height;
   CanvasRenderingContext2D mainCtxt = main.getContext("2d");
-  mainCtxt.fillStyle = "rgba(0, 0, 0, 0.05)";
+  mainCtxt.fillStyle = "rgba(0, 0, 0, 0.2)";
   mainCtxt.fillRect(0,0,width,height);
   mainCtxt.fillStyle = "rgba(255, 180, 180, 0.1)";
-  for (Particle particle in particles) {
+  for (Fish fish in fishes) {
     mainCtxt.beginPath();
-    mainCtxt.arc(particle.getX(), particle.getY(), 1, 0, PI*2, false);
+    mainCtxt.arc(fish.getX(), fish.getY(), fish.getZ(), 0, Math.PI*2, false);
     mainCtxt.closePath();
     mainCtxt.fill();
   }

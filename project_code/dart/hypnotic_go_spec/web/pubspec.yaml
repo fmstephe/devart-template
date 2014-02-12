@@ -1,0 +1,6 @@
+name:  hypnotic_go_spec
+description:  A sample application
+
+dependencies:
+  vector_math: any
+  three: any

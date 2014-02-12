@@ -1,7 +1,7 @@
 {
     "technologies": {
         "apis": [
-            ""
+            "canvas"
         ],
         "platforms": [
             "Google App Engine"

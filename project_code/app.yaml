@@ -37,3 +37,13 @@ handlers:
 - url: /demo2/hypnotic_go_spec.dart.js.map
   static_files: demo2/hypnotic_go_spec.dart.js.map
   upload: demo2/hypnotic_go_spec.dart.js.map
+# Demo3 Resources
+- url: /demo3
+  static_files: demo3/index.html
+  upload: demo3/index.html
+- url: /demo3/hypnotic_go_spec.dart.js
+  static_files: demo3/hypnotic_go_spec.dart.js
+  upload: demo3/hypnotic_go_spec.dart.js
+- url: /demo3/hypnotic_go_spec.dart.js.map
+  static_files: demo3/hypnotic_go_spec.dart.js.map
+  upload: demo3/hypnotic_go_spec.dart.js.map

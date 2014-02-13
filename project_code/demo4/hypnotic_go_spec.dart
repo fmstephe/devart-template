@@ -51,7 +51,7 @@ void nextLetter(SpecText gospec) {
     return;
   }
   clearLetter = false;
-  print("New Char \"" + char + "\"");
+  print("New Char");
   CanvasElement txt = querySelector("#text_canvas");
   height = txt.height;
   int width = txt.width;

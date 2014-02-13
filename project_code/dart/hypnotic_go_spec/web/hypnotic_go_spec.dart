@@ -2,7 +2,7 @@ import 'dart:html';
 import 'dart:async';
 import 'dart:math' as Math;
 
-List<Fish> fishes;
+List<Dust> dustParticles;
 num lastStamp = 0.0;
 Math.Random rnd = new Math.Random();
 int height;
@@ -17,18 +17,18 @@ void main() {
   mainCtxt.fillStyle = "rgba(0, 0, 0, 1)";
   mainCtxt.fillRect(0,0,width,height);
   SpecText gospec = new SpecText();
-  fishes = makeFish(width, height);
+  dustParticles = makeDust(width, height);
   cycleText(gospec);
   var timerTxt = new Timer.periodic(new Duration(seconds:18), (Timer timer) => cycleText(gospec));
   window.animationFrame.then(loop);
 }
 
-List<Fish> makeFish(int width, int height) {
-  List<Fish> Fishs = new List<Fish>();
+List<Dust> makeDust(int width, int height) {
+  List<Dust> dustParticles = new List<Dust>();
   for (int i = 0; i < 10000; i++) {
-    Fishs.add(new Fish(width, height));
+    dustParticles.add(new Dust(width, height));
   }
-  return Fishs;
+  return dustParticles;
 }
 
 void cycleText(SpecText gospec) {
@@ -72,26 +72,26 @@ void loop(num delta) {
   }
 //  print(delta - lastStamp);
   lastStamp = delta;
-  for (Fish fish in fishes) {
+  for (Dust dust in dustParticles) {
     if (clearLetter) {
-      fish.speedUp2D();
+      dust.speedUp2D();
     } else {
       if (rnd.nextDouble() > 0.70) {
-        if (!isColored(fish.getX(), fish.getY())) {
-          fish.speedUp2D();
+        if (!isColored(dust.getX(), dust.getY())) {
+          dust.speedUp2D();
         } else {
-          fish.slowDown2D();
+          dust.slowDown2D();
         }
       }
     }
-  fish.pushRandom();
-  fish.move();
+  dust.pushRandom();
+  dust.move();
   }
-  renderMain(fishes);
+  renderMain(dustParticles);
   window.requestAnimationFrame(loop);
 }
 
-void renderMain(List<Fish> fishes) {
+void renderMain(List<Dust> dustParticles) {
   CanvasElement main = querySelector("#main_canvas");
   int width = main.width;
   int height = main.height;
@@ -99,9 +99,9 @@ void renderMain(List<Fish> fishes) {
   mainCtxt.fillStyle = "rgba(0, 0, 0, 0.2)";
   mainCtxt.fillRect(0,0,width,height);
   mainCtxt.fillStyle = "rgba(255, 180, 180, 0.1)";
-  for (Fish fish in fishes) {
+  for (Dust dust in dustParticles) {
     mainCtxt.beginPath();
-    mainCtxt.arc(fish.getX(), fish.getY(), fish.getZ(), 0, Math.PI*2, false);
+    mainCtxt.arc(dust.getX(), dust.getY(), dust.getZ(), 0, Math.PI*2, false);
     mainCtxt.closePath();
     mainCtxt.fill();
   }
@@ -112,7 +112,7 @@ bool isColored(double x, double y) {
   return idx < data.length && data[idx] < 255;
 }
 
-class Fish {
+class Dust {
   
   static final Math.Random _rnd = new Math.Random();
   static final double _impulse = 0.003;
@@ -134,7 +134,7 @@ class Fish {
   double _width;
   double _height;
   
-  Fish(int width, int height) {
+  Dust(int width, int height) {
     _width = width * 1.0;
     _height = height * 1.0;
     place();

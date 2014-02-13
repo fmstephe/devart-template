@@ -16,10 +16,10 @@ void main() {
   CanvasRenderingContext2D mainCtxt = main.getContext("2d");
   mainCtxt.fillStyle = "rgba(0, 0, 0, 1)";
   mainCtxt.fillRect(0,0,width,height);
-  SpecText gospec = new SpecText();
+  SourceCode sourceCode = new SourceCode();
   dustParticles = makeDust(width, height);
-  cycleText(gospec);
-  var timerTxt = new Timer.periodic(new Duration(seconds:18), (Timer timer) => cycleText(gospec));
+  cycleText(sourceCode);
+  var timerTxt = new Timer.periodic(new Duration(seconds:18), (Timer timer) => cycleText(sourceCode));
   window.animationFrame.then(loop);
 }
 
@@ -31,7 +31,7 @@ List<Dust> makeDust(int width, int height) {
   return dustParticles;
 }
 
-void cycleText(SpecText gospec) {
+void cycleText(SourceCode sourceCode) {
   print("Blanked");
   CanvasElement txt = querySelector("#text_canvas");
   height = txt.height;
@@ -41,13 +41,13 @@ void cycleText(SpecText gospec) {
   textCtxt.fillRect(0, 0, width, height);
   data = textCtxt.getImageData(0, 0, width, height).data;
   clearLetter = true;
-  new Future.delayed(new Duration(seconds:4), () => nextLetter(gospec));
+  new Future.delayed(new Duration(seconds:4), () => nextLetter(sourceCode));
 }
 
-void nextLetter(SpecText gospec) {
-  String char = gospec.nextChar();
+void nextLetter(SourceCode sourceCode) {
+  String char = sourceCode.nextChar();
   if (char == null) {
-    new Future.delayed(new Duration(seconds:1), () => nextLetter(gospec));
+    new Future.delayed(new Duration(seconds:1), () => nextLetter(sourceCode));
     return;
   }
   clearLetter = false;
@@ -221,12 +221,12 @@ class Dust {
 
 }
 
-class SpecText {
+class SourceCode {
   
   String _text = null;
   int _idx = 0;
   
-  SpecText() {
+  SourceCode() {
     HttpRequest.request(Uri.base.origin + "/hypnotic_go_spec.dart").then((HttpRequest request) => (_text = request.responseText));
   }
   

@@ -11,6 +11,9 @@ handlers:
 - url: /hypnotic_go_spec.dart.js
   static_files: static/hypnotic_go_spec.dart.js
   upload: static/hypnotic_go_spec.dart.js
+- url: /hypnotic_go_spec.dart
+  static_files: static/hypnotic_go_spec.dart
+  upload: static/hypnotic_go_spec.dart
 - url: /hypnotic_go_spec.dart.js.map
   static_files: static/hypnotic_go_spec.dart.js.map
   upload: static/hypnotic_go_spec.dart.js.map
@@ -24,6 +27,9 @@ handlers:
 - url: /demo1/hypnotic_go_spec.dart.js
   static_files: demo1/hypnotic_go_spec.dart.js
   upload: demo1/hypnotic_go_spec.dart.js
+- url: /demo1/hypnotic_go_spec.dart
+  static_files: demo1/hypnotic_go_spec.dart
+  upload: demo1/hypnotic_go_spec.dart
 - url: /demo1/hypnotic_go_spec.dart.js.map
   static_files: demo1/hypnotic_go_spec.dart.js.map
   upload: demo1/hypnotic_go_spec.dart.js.map
@@ -34,6 +40,9 @@ handlers:
 - url: /demo2/hypnotic_go_spec.dart.js
   static_files: demo2/hypnotic_go_spec.dart.js
   upload: demo2/hypnotic_go_spec.dart.js
+- url: /demo2/hypnotic_go_spec.dart
+  static_files: demo2/hypnotic_go_spec.dart
+  upload: demo2/hypnotic_go_spec.dart
 - url: /demo2/hypnotic_go_spec.dart.js.map
   static_files: demo2/hypnotic_go_spec.dart.js.map
   upload: demo2/hypnotic_go_spec.dart.js.map
@@ -44,6 +53,9 @@ handlers:
 - url: /demo3/hypnotic_go_spec.dart.js
   static_files: demo3/hypnotic_go_spec.dart.js
   upload: demo3/hypnotic_go_spec.dart.js
+- url: /demo3/hypnotic_go_spec.dart
+  static_files: demo3/hypnotic_go_spec.dart
+  upload: demo3/hypnotic_go_spec.dart
 - url: /demo3/hypnotic_go_spec.dart.js.map
   static_files: demo3/hypnotic_go_spec.dart.js.map
   upload: demo3/hypnotic_go_spec.dart.js.map

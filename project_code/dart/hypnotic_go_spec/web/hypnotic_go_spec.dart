@@ -4,11 +4,16 @@ import 'dart:async';
 import 'dart:math' as Math;
 
 List<Dust> dustParticles;
-double expectedDelta = 100.0;
+double expectedDelta = 50.0;
 Math.Random rnd = new Math.Random();
 int height;
 List<int> data;
 bool clearLetter = true;
+
+double topWindStrength = 0.01;
+double topWindDirection = Math.PI;
+double bottomWindStrength = 0.1;
+double bottomWindDirection = 0.0;
 
 void main() {
   CanvasElement main = querySelector("#main_canvas");
@@ -70,6 +75,8 @@ void nextLetter(SourceCode sourceCode) {
 }
 
 void loop(Stopwatch stopwatch) {
+  topWindDirection += 0.01;
+  bottomWindDirection += 0.01;
   double delta = stopwatch.elapsedMilliseconds * 1.0;
   print(delta);
   stopwatch.reset();
@@ -115,7 +122,7 @@ bool isColored(double x, double y) {
 class Dust {
   
   static final Math.Random _rnd = new Math.Random();
-  static final double _impulse = 0.003;
+  static final double _impulse = 0.0005;
   static final double _initImpulseSaler = 60.0;
   static final double _initZImpulseSaler = 6.0;
   static final double _impulseScaler = 6.0;
@@ -167,8 +174,15 @@ class Dust {
   
   void move(double delta) {
     double r = normaliseDelta(delta);
-    _x += r * _vx;
-    _y += r * _vy;
+    double topZMod = _z/(maxNear - maxFar);
+    double topWindX = topZMod * Math.cos(topWindDirection) * topWindStrength;
+    double topWindY = topZMod * Math.sin(topWindDirection) * topWindStrength;
+    double bottomZMod = ((maxNear - maxFar)-(_z - maxFar))/(maxNear - maxFar);
+    bottomZMod = Math.max(bottomZMod, 0.0);
+    double bottomWindX = bottomZMod * Math.cos(bottomWindDirection) * bottomWindStrength;
+    double bottomWindY = bottomZMod * Math.sin(bottomWindDirection) * bottomWindStrength;
+    _x += r * (bottomWindX + topWindX +_vx);
+    _y += r * (bottomWindY + topWindY +_vy);
     _z += r * _vz;
     if (_x < 0) {
       _x = _width + _x;

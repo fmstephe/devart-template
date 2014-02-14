@@ -1,9 +1,10 @@
+import 'dart:core';
 import 'dart:html';
 import 'dart:async';
 import 'dart:math' as Math;
 
 List<Dust> dustParticles;
-num lastStamp = 0.0;
+double expectedDelta = 100.0;
 Math.Random rnd = new Math.Random();
 int height;
 List<int> data;
@@ -19,8 +20,10 @@ void main() {
   SourceCode sourceCode = new SourceCode();
   dustParticles = makeDust(width, height);
   cycleText(sourceCode);
+  Stopwatch stopwatch = new Stopwatch();
+  stopwatch.start();
+  var loopTxt = new Timer.periodic(new Duration(milliseconds:expectedDelta.round()), (Timer timer) => loop(stopwatch));
   var timerTxt = new Timer.periodic(new Duration(seconds:18), (Timer timer) => cycleText(sourceCode));
-  window.animationFrame.then(loop);
 }
 
 List<Dust> makeDust(int width, int height) {
@@ -41,7 +44,7 @@ void cycleText(SourceCode sourceCode) {
   textCtxt.fillRect(0, 0, width, height);
   data = textCtxt.getImageData(0, 0, width, height).data;
   clearLetter = true;
-  new Future.delayed(new Duration(seconds:4), () => nextLetter(sourceCode));
+  new Future.delayed(new Duration(seconds:2), () => nextLetter(sourceCode));
 }
 
 void nextLetter(SourceCode sourceCode) {
@@ -66,32 +69,29 @@ void nextLetter(SourceCode sourceCode) {
   data = textCtxt.getImageData(0, 0, width, height).data;
 }
 
-void loop(num delta) {
-  if (lastStamp == 0.0) {
-    lastStamp = delta;
-  }
-//  print(delta - lastStamp);
-  lastStamp = delta;
+void loop(Stopwatch stopwatch) {
+  double delta = stopwatch.elapsedMilliseconds * 1.0;
+  print(delta);
+  stopwatch.reset();
   for (Dust dust in dustParticles) {
     if (clearLetter) {
-      dust.speedUp2D();
+      dust.speedUp2D(delta);
     } else {
       if (rnd.nextDouble() > 0.70) {
         if (!isColored(dust.getX(), dust.getY())) {
-          dust.speedUp2D();
+          dust.speedUp2D(delta);
         } else {
-          dust.slowDown2D();
+          dust.slowDown2D(delta);
         }
       }
     }
-  dust.pushRandom();
-  dust.move();
+  dust.pushRandom(delta);
+  dust.move(delta);
   }
-  renderMain(dustParticles);
-  window.requestAnimationFrame(loop);
+  window.requestAnimationFrame(renderMain);
 }
 
-void renderMain(List<Dust> dustParticles) {
+void renderMain(num delta) {
   CanvasElement main = querySelector("#main_canvas");
   int width = main.width;
   int height = main.height;
@@ -162,28 +162,25 @@ class Dust {
     double vx = (_impulse - (_rnd.nextDouble() * (2*_impulse))) * _initImpulseSaler;
     double vy = (_impulse - (_rnd.nextDouble() * (2*_impulse))) * _initImpulseSaler;
     double vz = (_impulse - (_rnd.nextDouble() * (2*_impulse))) * _initZImpulseSaler;
-    push(vx, vy, vz);
+    push(vx, vy, vz, expectedDelta);
   }
   
-  void move() {
-    _x += _vx;
-    _y += _vy;
-    _z += _vz;
+  void move(double delta) {
+    double r = normaliseDelta(delta);
+    _x += r * _vx;
+    _y += r * _vy;
+    _z += r * _vz;
     if (_x < 0) {
-      _x = -_x;
-      _vx = -_vx;
+      _x = _width + _x;
     }
     if (_x > _width) {
-      _x = _width - (_x - _width);
-      _vx = -_vx;
+      _x = _x - _width;
     }
     if (_y < 0) {
-      _y = -_y;
-      _vy = -_vy;
+      _y = _height + _y;
     }
     if (_y > _height) {
-      _y = _height - (_y - _height);
-      _vy = -_vy;
+      _y = _y - _height;
     }
     if (_z < maxFar) {
       _z = maxFar + (maxFar - _z);
@@ -195,28 +192,33 @@ class Dust {
     }
   }
   
-  void pushRandom() {
+  void pushRandom(double delta) {
     double vx = (_impulse - (_rnd.nextDouble() * (2*_impulse))) * _impulseScaler;
     double vy = (_impulse - (_rnd.nextDouble() * (2*_impulse))) * _impulseScaler;
     double vz = (_impulse - (_rnd.nextDouble() * (2*_impulse))) * _impulseScaler;
-    push(vx, vy, vz);
+    push(vx, vy, vz, delta);
   }
   
-  void push(double px, double py, double pz) {
-    _vx += px;
-    _vy += py;
-    _vz += pz;
+  void speedUp2D(double delta) {
+    push(_vx/changeDivisor, _vy/changeDivisor, _vz/changeDivisor, delta);
+  }
+  
+  void slowDown2D(double delta) {
+    push(-_vx/changeDivisor, -_vy/changeDivisor, _vz/changeDivisor, delta);
+  }
+  
+  void push(double px, double py, double pz, double delta) {
+    double r = normaliseDelta(delta);
+    _vx += r * px;
+    _vy += r * py;
+    _vz += r * pz;
     _vx = Math.max(Math.min(_vx, maxV2D), -maxV2D);
     _vy = Math.max(Math.min(_vy, maxV2D), -maxV2D);
     _vz = Math.max(Math.min(_vz, maxVZ), -maxVZ);
   }
   
-  void speedUp2D() {
-    push(_vx/changeDivisor, _vy/changeDivisor, _vz/changeDivisor);
-  }
-  
-  void slowDown2D() {
-    push(-_vx/changeDivisor, -_vy/changeDivisor, _vz/changeDivisor);
+  double normaliseDelta(double delta) {
+    return delta / expectedDelta;
   }
 
 }
